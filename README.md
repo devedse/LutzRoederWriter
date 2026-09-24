@@ -126,7 +126,7 @@ net462
 net10.0-windows
 ```
 
-The GitHub Actions Linux build runs the `.NET Framework 4.6.2` tests using Mono.
+The GitHub Actions Linux build runs the .NET Framework 4.6.2 tests using Mono.
 
 The `net10.0-windows` target is cross-compiled on Linux but is not executed there because it is a Windows-specific target.
 
@@ -146,7 +146,7 @@ The main Linux build:
 - Restores NuGet packages
 - Builds the solution in Release mode
 - Runs the .NET Framework 4.6.2 tests
-- Collects code coverage
+- Collects code coverage using AltCover
 - Uploads coverage to Codecov
 - Creates the NuGet package
 - Creates the NuGet symbol package
@@ -213,7 +213,9 @@ This is done to preserve compatibility with applications that reference the orig
 
 ## Code coverage
 
-Code coverage is collected during the Linux GitHub Actions build using `dotnet-coverage`.
+Code coverage is collected during the Linux GitHub Actions build using AltCover.
+
+The .NET Framework 4.6.2 test assembly is executed under Mono, while AltCover instruments the assemblies and produces a Cobertura coverage report.
 
 Coverage results are uploaded to Codecov.
 
@@ -297,6 +299,21 @@ dotnet test tests/LutzRoederWriter.Tests/LutzRoederWriter.Tests.csproj \
   -f net462 \
   -c Release \
   --no-build
+```
+
+Run the tests with AltCover coverage:
+
+```shell
+mkdir -p artifacts/coverage
+
+dotnet test tests/LutzRoederWriter.Tests/LutzRoederWriter.Tests.csproj \
+  -f net462 \
+  -c Release \
+  --no-build \
+  /p:AltCover=true \
+  /p:AltCoverXmlReport="$(pwd)/artifacts/coverage/coverage.xml" \
+  /p:AltCoverCobertura="$(pwd)/artifacts/coverage/coverage.cobertura.xml" \
+  /p:AltCoverAssemblyExcludeFilter="LutzRoederWriter.Tests"
 ```
 
 Create the NuGet package:

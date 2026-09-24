@@ -51,10 +51,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y mono-complete
-
-      - name: Install tools
-        run: |
-          dotnet tool install --global dotnet-coverage
+          mono --version
 
       - name: Restore
         run: dotnet restore LutzRoederWriter.slnx
@@ -67,17 +64,26 @@ jobs:
           --no-restore
           /p:Version=${{ env.VERSION }}
 
+      - name: Create coverage directory
+        run: mkdir -p artifacts/coverage
+
       - name: Test with coverage
         run: |
-          mkdir -p artifacts/coverage
+          dotnet test tests/LutzRoederWriter.Tests/LutzRoederWriter.Tests.csproj \
+            -f net462 \
+            -c Release \
+            --no-build \
+            --no-restore \
+            --verbosity normal \
+            /p:AltCover=true \
+            /p:AltCoverXmlReport="${{ github.workspace }}/artifacts/coverage/coverage.xml" \
+            /p:AltCoverCobertura="${{ github.workspace }}/artifacts/coverage/coverage.cobertura.xml" \
+            /p:AltCoverAssemblyExcludeFilter="LutzRoederWriter.Tests"
 
-          dotnet-coverage collect \
-            'dotnet test tests/LutzRoederWriter.Tests/LutzRoederWriter.Tests.csproj -f net462 -c Release --no-build --no-restore --verbosity normal' \
-            -f cobertura \
-            -o './artifacts/coverage/coverage.cobertura.xml'
-
-      - name: List generated files
-        run: find artifacts -type f -print
+      - name: List generated coverage files
+        run: |
+          find artifacts/coverage -type f -print
+          test -f artifacts/coverage/coverage.cobertura.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
@@ -133,8 +139,7 @@ jobs:
           path: ./artifacts/Devedse.LutzRoederWriterNuGet
 
       - name: Display downloaded files
-        run: |
-          find ./artifacts -type f -print
+        run: find ./artifacts -type f -print
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -172,8 +177,7 @@ jobs:
           path: ./artifacts/Devedse.LutzRoederWriterNuGet
 
       - name: Display downloaded files
-        run: |
-          find ./artifacts -type f -print
+        run: find ./artifacts -type f -print
 
       - name: Push NuGet package
         run: >

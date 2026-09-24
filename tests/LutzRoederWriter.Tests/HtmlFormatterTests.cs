@@ -26,7 +26,14 @@ public class HtmlFormatterTests
     public void FormatMatchesOriginalBehavior(string input, string expected)
     {
         var formatter = new HtmlFormatter();
-        using var output = new StringWriter();
+
+        using var output = new StringWriter
+        {
+            // Writer originated as a Windows library. Force the original
+            // Windows line endings so this compatibility test behaves
+            // identically on Windows, Linux and macOS.
+            NewLine = "\r\n"
+        };
 
         formatter.Format(input, output);
 
