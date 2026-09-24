@@ -50,10 +50,6 @@ from Lutz Roeder's original software. The installed assembly remains named
 - [Architecture and maintenance notes](docs/architecture.md)
 - XML documentation is included beside `htmlwriter.dll` in the NuGet package for IDE IntelliSense.
 
-## Versioning
-
-Like [DeveMazeGeneratorCore](https://github.com/devedse/DeveMazeGeneratorCore), release builds use `1.0.<build number>`. The assembly version remains `1.0.0.0` so existing compiled consumers can bind to the replacement DLL.
-
 ## Attribution and license
 
 The original software was written by **Lutz Roeder** and remains under his original license. This repository is an altered source distribution modernized and packaged by **Devedse**; it must not be represented as the original source release.
