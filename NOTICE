@@ -1,0 +1,15 @@
+Devedse.LutzRoederWriter is a modernized distribution of Lutz Roeder's Writer.
+
+Original software:
+  Copyright (c) Lutz Roeder. All rights reserved.
+
+Modernization and NuGet packaging:
+  Copyright (c) Devedse.
+
+This source distribution is altered from the original software. The alterations
+include the SDK-style project structure, current .NET target frameworks, build
+automation, package metadata, documentation, tests, and compatibility changes
+needed to build the original API on supported .NET runtimes.
+
+The original license is reproduced without alteration in LICENSE and applies to
+the complete source distribution.

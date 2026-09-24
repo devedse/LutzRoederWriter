@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LutzRoederWriter/LutzRoederWriter.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LutzRoederWriter.Tests/LutzRoederWriter.Tests.csproj" />
+  </Folder>
+</Solution>

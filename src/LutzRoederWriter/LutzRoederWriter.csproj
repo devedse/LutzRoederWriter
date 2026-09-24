@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net462;net10.0-windows</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <RootNamespace>Writer</RootNamespace>
+    <AssemblyName>htmlwriter</AssemblyName>
+    <AssemblyTitle>Lutz Roeder's Writer</AssemblyTitle>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <Authors>Lutz Roeder; Devedse</Authors>
+    <Copyright>Copyright (c) 2002-2004 Lutz Roeder. Modernization copyright (c) Devedse.</Copyright>
+    <Company />
+    <Product>Devedse.LutzRoederWriter</Product>
+    <Description>Devedse's modern NuGet distribution of Lutz Roeder's Writer HTML editing controls, preserving the original Writer API and htmlwriter.dll assembly identity.</Description>
+    <PackageId>Devedse.LutzRoederWriter</PackageId>
+    <PackageTags>html;editor;winforms;mshtml;writer;lutz-roeder</PackageTags>
+    <PackageProjectUrl>https://github.com/devedse/LutzRoederWriter</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/devedse/LutzRoederWriter.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>This is an altered, modernized distribution of Lutz Roeder's original Writer source. See NOTICE.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts\packages</PackageOutputPath>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- These warnings describe deliberately preserved legacy API/interoperability shapes. -->
+    <NoWarn>$(NoWarn);1591;CA2022;CS0649;CS8981;CS9191;SYSLIB0003;SYSLIB0022;WFDEV006;WFO1000</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\NOTICE" Pack="true" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\docs\**\*.md" Pack="true" PackagePath="docs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="htmlwriter.Application.ico" />
+    <None Remove="htmlwriter.Application.png" />
+    <None Remove="htmlwriter.CommandBar.png" />
+    <None Remove="htmlwriter.Format.png" />
+    <EmbeddedResource Include="htmlwriter.Application.ico" LogicalName="htmlwriter.Application.ico" />
+    <EmbeddedResource Include="htmlwriter.Application.png" LogicalName="htmlwriter.Application.png" />
+    <EmbeddedResource Include="htmlwriter.CommandBar.png" LogicalName="htmlwriter.CommandBar.png" />
+    <EmbeddedResource Include="htmlwriter.Format.png" LogicalName="htmlwriter.Format.png" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

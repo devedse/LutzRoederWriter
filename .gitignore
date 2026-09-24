@@ -1,0 +1,15 @@
+/Old/
+/old/
+/htmlwriter.dll
+
+**/bin/
+**/obj/
+TestResults/
+artifacts/
+
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+
