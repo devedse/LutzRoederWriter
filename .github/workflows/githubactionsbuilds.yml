@@ -1,0 +1,60 @@
+name: GitHubActionsBuilds
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  generate_version_number:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      build_number: ${{ github.ref == 'refs/heads/master' && steps.buildnumber.outputs.build_number || 1 }}
+    steps:
+      - name: Generate build number
+        if: github.ref == 'refs/heads/master'
+        id: buildnumber
+        uses: onyxmueller/build-tag-number@v1
+        with:
+          token: ${{ secrets.github_token }}
+
+  build:
+    needs: generate_version_number
+    runs-on: windows-latest
+    env:
+      VERSION: 1.0.${{ needs.generate_version_number.outputs.build_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore LutzRoederWriter.slnx
+
+      - name: Build
+        run: dotnet build LutzRoederWriter.slnx -c Release --no-restore /p:Version=${{ env.VERSION }}
+
+      - name: Test
+        run: dotnet test LutzRoederWriter.slnx -c Release --no-build
+
+      - name: Pack
+        run: dotnet pack src/LutzRoederWriter/LutzRoederWriter.csproj -c Release --no-build /p:Version=${{ env.VERSION }}
+
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: Devedse.LutzRoederWriterNuGet
+          path: |
+            artifacts/packages/*.nupkg
+            artifacts/packages/*.snupkg
+
+      - name: Publish NuGet package
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
